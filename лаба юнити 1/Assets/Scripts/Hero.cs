@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class HeroController : MonoBehaviour
 {
-    public float moveSpeed = 5f; // Скорость движения персонажа
-    public float jumpForce = 5f; // Сила прыжка
+    public float moveSpeed = 5f;  // Скорость движения персонажа
+    public float jumpForce = 5f;   // Сила прыжка
 
-    private bool isGrounded; // Проверка, находится ли персонаж на земле
-    private Rigidbody2D rb; // Ссылка на компонент Rigidbody2D
+    private bool isGrounded;        // Проверка, находится ли персонаж на земле
+    private Rigidbody2D rb;         // Ссылка на компонент Rigidbody2D
 
     void Start()
     {
@@ -15,8 +15,8 @@ public class HeroController : MonoBehaviour
 
     void Update()
     {
-        Move();
-        Jump();
+        Move();   // Вызов метода для передвижения
+        Jump();   // Вызов метода для прыжка
     }
 
     void Move()
@@ -27,11 +27,11 @@ public class HeroController : MonoBehaviour
         // Поворот спрайта в зависимости от направления движения
         if (moveInput > 0) 
         {
-            transform.localScale = new Vector3(1, 1, 1); // Поворачиваемся вправо
+            transform.rotation = Quaternion.Euler(0, 0, 0); // Поворачиваем вправо
         }
         else if (moveInput < 0) 
         {
-            transform.localScale = new Vector3(-1, 1, 1); // Поворачиваемся влево
+            transform.rotation = Quaternion.Euler(0, 180, 0); // Поворачиваем налево
         }
     }
 
