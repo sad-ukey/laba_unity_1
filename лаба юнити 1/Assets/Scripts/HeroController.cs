@@ -9,59 +9,56 @@ public class HeroController : MonoBehaviour
     private Rigidbody2D rb; // ссылка на компонент Rigidbody2D
     private bool isGrounded; // флаг, указывающий, что персонаж на земле
     private float moveInput; // переменная для хранения ввода движения
-
+    private Animator animator; // ссылка на компонент Animator
+    
     void Start()
     {
-        // Получаем компонент Rigidbody2D на старте
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>(); // Получаем компонент Animator
     }
 
     void Update()
     {
-        // Получаем горизонтальный ввод (влево/вправо)
-        moveInput = Input.GetAxis("Horizontal"); 
+        moveInput = Input.GetAxis("Horizontal");
 
         // Поворот персонажа в зависимости от ввода
         if (moveInput > 0)
         {
-            // Вправо
-            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); 
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
         else if (moveInput < 0)
         {
-            // Влево
-            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); 
+
+            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
 
-        // Проверка для прыжка
+        // Обновляем параметр Speed в Animator
+        animator.SetFloat("Speed", Mathf.Abs(moveInput)); // Устанавливаем значение Speed для Animator
+
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
-            // Добавляем силу для прыжка
-            rb.AddForce(new Vector2(0, jumpForce)); 
+            rb.AddForce(new Vector2(0, jumpForce));
         }
     }
 
     void FixedUpdate()
     {
-        // Движение персонажа
         rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Проверяем, входит ли персонаж в контакт с объектом земли
         if (collision.gameObject.CompareTag("Ground"))
         {
-            isGrounded = true; // Персонаж на земле
+            isGrounded = true;
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        // Как только персонаж покидает землю
         if (collision.gameObject.CompareTag("Ground"))
         {
-            isGrounded = false; // Персонаж в воздухе
+            isGrounded = false;
         }
     }
 }
